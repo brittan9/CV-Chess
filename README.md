@@ -1,1 +1,1 @@
-# CV-Chess
+# CV-Nothing-But-Net
