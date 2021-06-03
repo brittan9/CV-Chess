@@ -1,5 +1,5 @@
-train: ../CV-Nothing-But_Net/train/images
-val: ../CV-Nothing-But_Net/valid/images
+train: ../CV-Nothing-But-Net/train/images
+val: ../CV-Nothing-But-Net/valid/images
 
 nc: 1
 names: ['basketball-hoop']
