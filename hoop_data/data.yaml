@@ -1,0 +1,5 @@
+train: ../CV-Nothing-But-Net/hoop_data/train/images
+val: ../CV-Nothing-But-Net/hoop_data/valid/images
+
+nc: 1
+names: ['basketball-hoop']
