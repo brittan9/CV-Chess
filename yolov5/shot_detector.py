@@ -90,6 +90,8 @@ def coordinatesToOriginalPixelLocations(trajectory_coordinates, height, x_offset
 
 def main():
     file = open("shot_stats.txt", "w")
+    num_shots_made = 0
+    sum_of_shot_angles = 0
     for shot_num, arg in enumerate(sys.argv[1:]):
         cap = cv.VideoCapture(arg)
 
@@ -115,7 +117,6 @@ def main():
                 break
             
             frame_width = np.shape(frame)[1]
-            frame_height = np.shape(frame)[0]
             original_frame_height = np.shape(frame)[0]
             original_frame_width = np.shape(frame)[1]
 
@@ -178,7 +179,6 @@ def main():
         coordinates = pixelLocationsToCoordinates(moving_pixel_locations, num_data_pts, motion_crop_height)
         plotMovingPixels(coordinates)
 
-        image = cv.imread("first_frame.jpg")
         fitTrajectoryCurve(coordinates, 0.1, 1000)
         plotTrajectory(last_x, "after-fit.jpg")
         trajectory_coordinates = getTrajectoryInCoordinates(last_x)
@@ -191,7 +191,10 @@ def main():
             arc_color = (0, 0, 255)
         arc_thickness = 8
         isClosed = False
-        file.write("Shot #" + str(shot_num) + "\nShot angle: " + str(angle.item()) + "\nShot made it: " + str(shotMade) + "\n\n")
+        sum_of_shot_angles += angle.item()
+        if shotMade:
+            num_shots_made += 1
+        file.write("Shot #" + str(shot_num + 1) + "\nShot angle: " + str(angle.item()) + "\nShot made it: " + str(shotMade) + "\n\n")
         result = cv.VideoWriter(arg[:len(arg) - 4] + '_analysis.avi', cv.VideoWriter_fourcc(*'MJPG'), 30, (original_frame_width, original_frame_height))
         while cap.isOpened():
             ret, frame = cap.read()
@@ -210,6 +213,9 @@ def main():
                 break
         cap.release()
         cv.destroyAllWindows()
+    file.write("Number of shots made: " + str(num_shots_made) + "/" + str(len(sys.argv) - 1))
+    file.write("\nPercentage of shots made: " + str(100 * (num_shots_made / (len(sys.argv) - 1))))
+    file.write("\nAverage shot angle: " + str(sum_of_shot_angles / len(sys.argv) - 1))
     file.close()
 
 if __name__ == '__main__':
