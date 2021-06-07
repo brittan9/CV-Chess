@@ -43,7 +43,13 @@ def locatePerson(img_path):
     model.conf = 0.75
     model.classes = [0]
     results = model(img_path, size=544)
-    return BoundingBox(int(results.xyxy[0][0][0]), int(results.xyxy[0][0][1]), int(results.xyxy[0][0][2]), int(results.xyxy[0][0][3]))
+    highest_confidence_seen = 0
+    person_bbox = BoundingBox()
+    for people in results.xyxy[0]:
+        if people[4] > highest_confidence_seen:
+            highest_confidence_seen = people[4]
+            person_bbox = BoundingBox(int(people[0]), int(people[1]), int(people[2]), int(people[3]))
+    return person_bbox
 
 def model(input):
     scaled_inputs = torch.tan(torch.deg2rad(angle)) * torch.from_numpy(input)
@@ -55,8 +61,9 @@ def plotTrajectory(last_x, filename):
     outputs = model(np.arange(last_x))
     outputs = outputs.detach().numpy()
     # plt.scatter(coordinates[:, 0], coordinates[:,1])
-    plt.plot(np.arange(last_x), outputs)
+    plt.plot(np.arange(last_x), outputs, c='r')
     plt.savefig(filename)
+    plt.clf()
 
 def fitTrajectoryCurve(coordinates, learning_rate, epochs):
     # fit trajectory curve
@@ -95,6 +102,7 @@ def main():
     for shot_num, arg in enumerate(sys.argv[1:]):
         cap = cv.VideoCapture(arg)
 
+        shouldUseArcData = True
         background_subtract = cv.createBackgroundSubtractorMOG2(500,800,True)
         moving_pixel_locations = []
         num_data_pts = 0
@@ -105,7 +113,6 @@ def main():
         enteredHoop = False
         shotMade = False
         motion_crop_height = 0
-        motion_crop_width = 0
         last_x = 0
         original_frame_width = 0
         original_frame_height = 0
@@ -156,6 +163,7 @@ def main():
                 percentage_pixels_in_motion = len(bottom_hoop_bbox_motion) / (hoop_bbox.getWidth() * 20)
                 if percentage_pixels_in_motion > 0.1:
                     shotMade = True
+                    shouldUseArcData = False
             # crop to just contain shot
             motion_crop = motion_mask[0:person_bbox.y1, person_bbox.x2:hoop_bbox.x1]
             
@@ -163,12 +171,12 @@ def main():
             resized_motion_crop = cv.resize(motion_crop, (0,0), fx=0.5, fy=0.5)
 
             motion_crop_height = np.shape(resized_motion_crop)[0]
-            motion_crop_width = np.shape(resized_motion_crop)[1]
 
-            # find indices of moving pixel 
-            new_pixel_locations = np.argwhere(resized_motion_crop == 255)
-            moving_pixel_locations.append(new_pixel_locations)
-            num_data_pts += np.shape(new_pixel_locations)[0]
+            # find indices of moving pixel
+            if shouldUseArcData:
+                new_pixel_locations = np.argwhere(resized_motion_crop == 255)
+                moving_pixel_locations.append(new_pixel_locations)
+                num_data_pts += np.shape(new_pixel_locations)[0]
             if len(new_pixel_locations) != 0:
                 last_x = max(np.amax(new_pixel_locations, axis=0)[1], last_x)
 
@@ -180,7 +188,7 @@ def main():
         plotMovingPixels(coordinates)
 
         fitTrajectoryCurve(coordinates, 0.1, 1000)
-        plotTrajectory(last_x, "after-fit.jpg")
+        plotTrajectory(last_x, str(arg[:len(arg) - 4]) + "_fit.jpg")
         trajectory_coordinates = getTrajectoryInCoordinates(last_x)
         arc_points = coordinatesToOriginalPixelLocations(trajectory_coordinates, motion_crop_height, person_bbox.x2)
         arc_points.reshape((-1, 1, 2))
