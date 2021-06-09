@@ -90,8 +90,8 @@ function App() {
                 (on a different image). Underneath those two images is an example of the parameters optimized and the trajectory formula used 
                 to do so.
               </p>
-              <img className="photo" src={shot_graph} alt="shot graph of moving pixels"/>
-              <img className="photo" src={shot_graph_fit} alt="shot graph of moving pixels fitted with curve"/>
+              <img className="photo resize-photo" src={shot_graph} alt="shot graph of moving pixels"/>
+              <img className="photo resize-photo" src={shot_graph_fit} alt="shot graph of moving pixels fitted with curve"/>
               <div>
                 <img className="photo resize-photo" src={trajectory} alt="trajectory curve with variables"/>
                 <img className="photo resize-photo" src={projectile_formula} alt="projectile formula used for finding the angle and velocity"/>
@@ -118,7 +118,7 @@ function App() {
               <video className="photo" src={M_Make} autoplay controls width="640" height="360"/>
               <video className="photo" src={M_Miss} autoplay controls width="640" height="360"/>
               <div>
-                <img className="photo" src={shot_stats} alt="text file containing shot stats"/>
+                <img className="photo resize-photo" src={shot_stats} alt="text file containing shot stats"/>
               </div>
             <h2>Results</h2>
               <p>
