@@ -115,6 +115,10 @@ function App() {
                 trim videos automatically by recognizing what a shot looks like using binary classifcation.
                 </p>
               <h2>Links and References</h2>
+                <p>Camera-based Basketball Scoring Detection Using CNN: <link>http://www.ijac.net/fileIJAC/journal/article/ijac/2021/2/PDF/IJAC-2020-05-119.pdf</link></p>
+                <p>Information on shot angles: <link>https://www.noahbasketball.com/blog/is-a-higher-arc-really-better</link></p>
+                <p>Shooting Hoops with Keras and Tensorflow - Zack Akil <link>https://www.youtube.com/watch?v=S9PcPbtTcPc&t=811s</link></p>
+                <p></p>
     </div>
   );
 }
