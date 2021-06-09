@@ -37,11 +37,8 @@ def flipCoordinates(coordinates, frame_width):
         coordinate[0] = frame_width - coordinate[0]
     return coordinate
 
-def locatePerson(img_path):
+def locatePerson(img_path, model):
     # person detect
-    model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
-    model.conf = 0.75
-    model.classes = [0]
     results = model(img_path, size=544)
     highest_confidence_seen = 0
     person_bbox = BoundingBox()
@@ -99,6 +96,9 @@ def main():
     file = open("shot_stats.txt", "w")
     num_shots_made = 0
     sum_of_shot_angles = 0
+    model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+    model.conf = 0.75
+    model.classes = [0]
     for shot_num, arg in enumerate(sys.argv[1:]):
         cap = cv.VideoCapture(arg)
 
@@ -116,7 +116,7 @@ def main():
         last_x = 0
         original_frame_width = 0
         original_frame_height = 0
-
+        
         while cap.isOpened():
             ret, frame = cap.read()
             # if frame is read correctly ret is True
@@ -133,7 +133,7 @@ def main():
                 cv.imwrite("first_frame.jpg", frame)
                 
                 # person detect
-                person_bbox = locatePerson("first_frame.jpg")
+                person_bbox = locatePerson("first_frame.jpg", model)
                 # hoop detect
                 hoop_bbox = detect("first_frame.jpg", "./weights/best.pt", 544, 0.1)
 
@@ -150,13 +150,11 @@ def main():
             
             # get motion mask
             motion_mask = background_subtract.apply(frame)
-            cv.imshow("motion mask", motion_mask[hoop_bbox.y1 - 40:hoop_bbox.y2, hoop_bbox.x1-10:hoop_bbox.x2])
 
             top_hoop_bbox = motion_mask[hoop_bbox.y1 - 40:hoop_bbox.y1, hoop_bbox.x1 - 10:hoop_bbox.x2]
             top_hoop_bbox_motion = np.argwhere(top_hoop_bbox == 255)
             percentage_pixels_in_motion = len(top_hoop_bbox_motion) / ((hoop_bbox.getWidth() + 10) * 40)
             if percentage_pixels_in_motion > 0.04:
-                print("entered hoop")
                 enteredHoop = True
 
             if enteredHoop:
@@ -205,7 +203,8 @@ def main():
         if shotMade:
             num_shots_made += 1
         file.write("Shot #" + str(shot_num + 1) + "\nShot angle: " + str(angle.item()) + "\nShot made it: " + str(shotMade) + "\n\n")
-        result = cv.VideoWriter(arg[:len(arg) - 4] + '_analysis.avi', cv.VideoWriter_fourcc(*'MJPG'), 30, (original_frame_width, original_frame_height))
+        result = cv.VideoWriter(arg[:len(arg) - 4] + '_analysis.mp4', cv.VideoWriter_fourcc(*'mp4v'), 30, (original_frame_width, original_frame_height))
+        
         while cap.isOpened():
             ret, frame = cap.read()
             # if frame is read correctly ret is True
@@ -213,7 +212,6 @@ def main():
                 break
 
             if shouldFlip:
-                #flipCoordinates(trajectory_coordinates, motion_crop_width)
                 frame = cv.flip(frame, 1)
             frame = cv.polylines(frame, [arc_points], 
                             isClosed, arc_color, 
@@ -225,7 +223,7 @@ def main():
         cv.destroyAllWindows()
     file.write("Number of shots made: " + str(num_shots_made) + "/" + str(len(sys.argv) - 1))
     file.write("\nPercentage of shots made: " + str(100 * (num_shots_made / (len(sys.argv) - 1))))
-    file.write("\nAverage shot angle: " + str(sum_of_shot_angles / len(sys.argv) - 1))
+    file.write("\nAverage shot angle: " + str(sum_of_shot_angles / (len(sys.argv) - 1)))
     file.close()
 
 if __name__ == '__main__':
