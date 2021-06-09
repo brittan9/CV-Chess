@@ -103,7 +103,7 @@ def main():
         cap = cv.VideoCapture(arg)
 
         shouldUseArcData = True
-        background_subtract = cv.createBackgroundSubtractorMOG2(500,800,True)
+        background_subtract = cv.createBackgroundSubtractorMOG2(500,400,True)
         moving_pixel_locations = []
         num_data_pts = 0
         person_bbox = BoundingBox()
@@ -150,18 +150,20 @@ def main():
             
             # get motion mask
             motion_mask = background_subtract.apply(frame)
+            cv.imshow("motion mask", motion_mask[hoop_bbox.y1 - 40:hoop_bbox.y2, hoop_bbox.x1-10:hoop_bbox.x2])
 
-            top_hoop_bbox = motion_mask[hoop_bbox.y1 - 10:hoop_bbox.y1 + 10, hoop_bbox.x1:hoop_bbox.x2]
+            top_hoop_bbox = motion_mask[hoop_bbox.y1 - 40:hoop_bbox.y1, hoop_bbox.x1 - 10:hoop_bbox.x2]
             top_hoop_bbox_motion = np.argwhere(top_hoop_bbox == 255)
-            percentage_pixels_in_motion = len(top_hoop_bbox_motion) / (hoop_bbox.getWidth() * 20)
-            if percentage_pixels_in_motion > 0.05:
+            percentage_pixels_in_motion = len(top_hoop_bbox_motion) / ((hoop_bbox.getWidth() + 10) * 40)
+            if percentage_pixels_in_motion > 0.04:
+                print("entered hoop")
                 enteredHoop = True
 
             if enteredHoop:
-                bottom_hoop_bbox = motion_mask[hoop_bbox.y2 - 10:hoop_bbox.y2 + 10, hoop_bbox.x1:hoop_bbox.x2]
+                bottom_hoop_bbox = motion_mask[hoop_bbox.y2 - 20:hoop_bbox.y2 + 10, hoop_bbox.x1:hoop_bbox.x2]
                 bottom_hoop_bbox_motion = np.argwhere(bottom_hoop_bbox == 255)
-                percentage_pixels_in_motion = len(bottom_hoop_bbox_motion) / (hoop_bbox.getWidth() * 20)
-                if percentage_pixels_in_motion > 0.1:
+                percentage_pixels_in_motion = len(bottom_hoop_bbox_motion) / (hoop_bbox.getWidth() * 30)
+                if percentage_pixels_in_motion > 0.07:
                     shotMade = True
                     shouldUseArcData = False
             # crop to just contain shot
