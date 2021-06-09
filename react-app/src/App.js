@@ -118,7 +118,7 @@ function App() {
               <video className="photo" src={M_Make} autoplay controls width="640" height="360"/>
               <video className="photo" src={M_Miss} autoplay controls width="640" height="360"/>
               <div>
-                <img className="photo resize-photo" src={shot_stats} alt="text file containing shot stats"/>
+                <img className="photo" src={shot_stats} alt="text file containing shot stats"/>
               </div>
             <h2>Results</h2>
               <p>
