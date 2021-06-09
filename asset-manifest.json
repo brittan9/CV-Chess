@@ -1,0 +1,39 @@
+{
+  "files": {
+    "main.css": "/CV-Nothing-But_Net/static/css/main.6158f6fa.chunk.css",
+    "main.js": "/CV-Nothing-But_Net/static/js/main.54b7b616.chunk.js",
+    "main.js.map": "/CV-Nothing-But_Net/static/js/main.54b7b616.chunk.js.map",
+    "runtime-main.js": "/CV-Nothing-But_Net/static/js/runtime-main.4191cb5c.js",
+    "runtime-main.js.map": "/CV-Nothing-But_Net/static/js/runtime-main.4191cb5c.js.map",
+    "static/css/2.4c97ca4f.chunk.css": "/CV-Nothing-But_Net/static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.2e5b0719.chunk.js": "/CV-Nothing-But_Net/static/js/2.2e5b0719.chunk.js",
+    "static/js/2.2e5b0719.chunk.js.map": "/CV-Nothing-But_Net/static/js/2.2e5b0719.chunk.js.map",
+    "static/js/3.74e228a2.chunk.js": "/CV-Nothing-But_Net/static/js/3.74e228a2.chunk.js",
+    "static/js/3.74e228a2.chunk.js.map": "/CV-Nothing-But_Net/static/js/3.74e228a2.chunk.js.map",
+    "index.html": "/CV-Nothing-But_Net/index.html",
+    "static/css/2.4c97ca4f.chunk.css.map": "/CV-Nothing-But_Net/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/main.6158f6fa.chunk.css.map": "/CV-Nothing-But_Net/static/css/main.6158f6fa.chunk.css.map",
+    "static/js/2.2e5b0719.chunk.js.LICENSE.txt": "/CV-Nothing-But_Net/static/js/2.2e5b0719.chunk.js.LICENSE.txt",
+    "static/media/analysis_B_Miss1.ec76a185.ogv": "/CV-Nothing-But_Net/static/media/analysis_B_Miss1.ec76a185.ogv",
+    "static/media/analysis_B_Miss2.a7240977.ogv": "/CV-Nothing-But_Net/static/media/analysis_B_Miss2.a7240977.ogv",
+    "static/media/analysis_M_Make.7022644d.ogv": "/CV-Nothing-But_Net/static/media/analysis_M_Make.7022644d.ogv",
+    "static/media/analysis_M_Miss.b74c33ea.ogv": "/CV-Nothing-But_Net/static/media/analysis_M_Miss.b74c33ea.ogv",
+    "static/media/ball_leaving.a86ac4f5.jpg": "/CV-Nothing-But_Net/static/media/ball_leaving.a86ac4f5.jpg",
+    "static/media/ball_mid.8d880a41.jpg": "/CV-Nothing-But_Net/static/media/ball_mid.8d880a41.jpg",
+    "static/media/hoop_dataset.477e805c.jpeg": "/CV-Nothing-But_Net/static/media/hoop_dataset.477e805c.jpeg",
+    "static/media/hoop_detect.c9d993d8.jpg": "/CV-Nothing-But_Net/static/media/hoop_detect.c9d993d8.jpg",
+    "static/media/person_detect.3ba8b459.jpg": "/CV-Nothing-But_Net/static/media/person_detect.3ba8b459.jpg",
+    "static/media/projectile_formula.56da6552.png": "/CV-Nothing-But_Net/static/media/projectile_formula.56da6552.png",
+    "static/media/shot_graph.0b3720fb.jpeg": "/CV-Nothing-But_Net/static/media/shot_graph.0b3720fb.jpeg",
+    "static/media/shot_graph_fit.da3686d3.jpg": "/CV-Nothing-But_Net/static/media/shot_graph_fit.da3686d3.jpg",
+    "static/media/shot_stats.c59e465c.png": "/CV-Nothing-But_Net/static/media/shot_stats.c59e465c.png",
+    "static/media/trajectory.84616773.jpeg": "/CV-Nothing-But_Net/static/media/trajectory.84616773.jpeg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4191cb5c.js",
+    "static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.2e5b0719.chunk.js",
+    "static/css/main.6158f6fa.chunk.css",
+    "static/js/main.54b7b616.chunk.js"
+  ]
+}
