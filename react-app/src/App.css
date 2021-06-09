@@ -27,10 +27,13 @@ p {
 }
 
 .photo {
-  max-height: 40vh;
-  max-width: 40vh;
-  min-height: 30vh;
-  min-width: 30vh;
+  padding: 15px;
+  padding-bottom: 25px;
+}
+
+.resize-photo {
+  width: 40%;
+  height: 40%;
 }
 
 h4 {

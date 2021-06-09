@@ -1,8 +1,22 @@
 import './App.css';
-// Importing the Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import trajectory from './data/trajectory.jpeg'
 import shot_graph from './data/shot_graph.jpeg'
+import hoop_dataset from './data/hoop_dataset.jpeg'
+import hoop_detect from './data/hoop_detect.jpg'
+import person_detect from './data/person_detect.jpg'
+import shot_graph_fit from './data/shot_graph_fit.jpg'
+import projectile_formula from './data/projectile_formula.png'
+import ball_entering from './data/ball_entering.jpg'
+import ball_mid from './data/ball_mid.jpg'
+import ball_leaving from './data/ball_leaving.jpg'
+import M_Make from './data/analysis_M_Make.ogv'
+import M_Miss from './data/analysis_M_Miss.ogv'
+import B_Miss1 from './data/analysis_B_Miss1.ogv'
+import B_Miss2 from './data/analysis_B_Miss2.ogv'
+// import Overview from './data/overview_vid.ogv'
+import shot_stats from './data/shot_stats.png'
+
 
 function App() {
   return (
@@ -10,7 +24,10 @@ function App() {
         <h1 className="App-header">Nothing But Net</h1>
           <h5>CSE 455 Computer Vision - Final Project</h5>
           <h5>Team: Micah Wittaus and Brittan Robinett</h5>
+          <h5>Code: <a href="https://github.com/brittan9/CV-Nothing-But-Net">GitHub Repo</a></h5>
           <section>
+          {/* <h2>Project Overview Video</h2> */}
+            {/* <video className="photo" src={} autoplay controls width="960" height="540"/> */}
           <h2>Project Goals</h2>
             <p>
               Inspired by one of our shared hobbies and being stuck inside this year, our team wanted to use
@@ -41,6 +58,7 @@ function App() {
                 but based on our testing we believe that our application would likely perform better indoors because outdoors we had a great deal of background
                 movement from cars, trees, etc. skewing our algorithm's perception of where the ball is. 
               </p>
+              <img className="photo" src={hoop_dataset} alt="some labelled hoop data"/>
             <h4>Object Detection: Hoop and Person</h4>
               <p>
                 Our team chose to use Yolov5 for object detection because YOLO object detection methods are fast and accurate compared to other methods
@@ -54,28 +72,38 @@ function App() {
                 from PyTorch Hub, and constrained it only to detect Class 0, or "Person". 
               </p>
               <p>
-                If the algorithm detects multiple hoops or multiple people, it chooses the one it detects with highest confidence. 
+                If the algorithm detects multiple hoops or multiple people, it chooses the one it detects with highest confidence. Below is a frame
+                from one of our testing videos showing the basktball hoop detected with 85% confidence and the person detected with 91% confidence.
               </p>
+              <div>
+                <img className="photo resize-photo" src={hoop_detect} alt="shot photo with bounding box around basketball hoop"/>
+                <img className="photo resize-photo" src={person_detect} alt="shot photo with bounding box around person"/>
+              </div>
             <h4>Shot Analysis: Trajectory Fitting and Shot Classifcation</h4>
               <p>
                 Using the bounding box of the person and the hoop, we are able to locate the area that would contain the arc of the shot
                 which we then looked for moving pixels within in order to isolate the movement of the ball. We use an OpenCV foreground/background 
                 segmentation method that locates all moving pixels in a frame within a threshold to accomplish this. Because we wanted to get the entire
-                shot over multiple frames of video, we bulit up a list of moving pixel locations and then had to convert them to coordinate locations on a
-                cartesian xy-plane. 
+                shot over multiple frames of video, we built up a list of moving pixel locations and then had to convert them to coordinate locations on a
+                cartesian xy-plane. After we gathered all the moving pixel coordinates, we fit a trajectory curve to our data using an Adam optimizer to get the angle 
+                and velocity of our shot. Below on the left is an example of the plotting of a shot arc and on the right is an example of a fitting of a shot arc
+                (on a different image). Underneath those two images is an example of the parameters optimized and the trajectory formula used 
+                to do so.
               </p>
               <img className="photo" src={shot_graph} alt="shot graph of moving pixels"/>
-              <p>
-                After we gathered all the moving pixel coordinates, we fit a trajectory curve to our data using an Adam optimizer to get the angle 
-                and velocity of our shot. 
-              </p>
-              <img className="photo" src={trajectory} alt="trajectory curve with variables"/>
+              <img className="photo" src={shot_graph_fit} alt="shot graph of moving pixels fitted with curve"/>
+              <img className="photo resize-photo" src={trajectory} alt="trajectory curve with variables"/>
+              <img className="photo resize-photo" src={projectile_formula} alt="projectile formula used for finding the angle and velocity"/>
               <p>
                 To determine whether or not the shot made it in, we check for moving pixels in a region above the rim of the hoop, and if there is enough
                 movement in that region, we start checking for moving pixels in a region below the net (both need to be passed through for the shot to count).
                 This is important because we may detect moving pixels above, next to, behind, or generally near the rim/net without it actually passing 
-                through the net. 
+                through the net. Below is three images of our motion mask in the region of the hoop - from left to right we're showing
+                a ball entering the hoop, inside the hoop, and then leaving the hoop.
               </p>
+              <img className="photo" src={ball_entering} alt="ball entering hoop"/>
+              <img className="photo" src={ball_mid} alt="ball inside hoop"/>
+              <img className="photo" src={ball_leaving} alt="ball leaving hoop"/>
               <h4>Displaying Analysis</h4>
               <p>
                 In order to display the results of the shot analysis to the user we chose to make a text file, called "shot_stats.txt", containing the shot number,
@@ -85,8 +113,22 @@ function App() {
                 exception of "_analysis.avi" tacked on to the end of them that contain the original video with the shot arc overlayed on it 
                 (the shot arc is red for shots detected as misses and green otherwise).
               </p>
+              <video className="photo" src={M_Make} autoplay controls width="640" height="360"/>
+              <video className="photo" src={M_Miss} autoplay controls width="640" height="360"/>
+              <img className="photo resize-photo" src={shot_stats} alt="text file containing shot stats"/>
             <h2>Results</h2>
-
+              <p>
+                  We tested with 11 videos of shots going in and 29 videos of shot misses, and correctly classified 35 out of the 40.
+                  We had 86% accuracy on classifying misses and 90% accuracy on classifying shots made. The accuracy of the shot angle is
+                  difficult to determine, however, we noticed that with the stable footage (shot with a tripod) our curve fit the trajectory
+                  of the ball pretty well in each video. Shooting handheld introduced noise into our moving pixel data, which tended to pull
+                  the shot arc downwards as well as give false positives to missed shots. After examining the cases in which our algorithm 
+                  classified a shot as making it when it shouldn't have, it's apparent to us that we would need to take a different approach 
+                  to avoid this type of misclassification (explored in 'Reflection'). For example, the videos included below show ball behavior which could appear to go both
+                  above and below the hoop, even though it doesn't pass through. 
+              </p>
+              <video className="photo" src={B_Miss1} autoplay controls width="640" height="360"/>
+              <video className="photo" src={B_Miss2} autoplay controls width="640" height="360"/>
             <h2>Reflection</h2>
               <h4>Alternative Approaches</h4>
                 <p>
@@ -114,11 +156,13 @@ function App() {
                 upload to a laptop or home computer. Lastly, another functionality we would like to implement is the ability for our algorithm to
                 trim videos automatically by recognizing what a shot looks like using binary classifcation.
                 </p>
-              <h2>Links and References</h2>
-                <p>Camera-based Basketball Scoring Detection Using CNN: <link>http://www.ijac.net/fileIJAC/journal/article/ijac/2021/2/PDF/IJAC-2020-05-119.pdf</link></p>
-                <p>Information on shot angles: <link>https://www.noahbasketball.com/blog/is-a-higher-arc-really-better</link></p>
-                <p>Shooting Hoops with Keras and Tensorflow - Zack Akil <link>https://www.youtube.com/watch?v=S9PcPbtTcPc&t=811s</link></p>
-                <p></p>
+              <h2>Links to References</h2>
+                <p><a href="http://www.ijac.net/fileIJAC/journal/article/ijac/2021/2/PDF/IJAC-2020-05-119.pdf">Camera-based Basketball Scoring Detection Using CNN</a></p>
+                <p><a href="https://www.noahbasketball.com/blog/is-a-higher-arc-really-better">Information on basketball shot angles</a></p>
+                <p><a href="https://www.youtube.com/watch?v=S9PcPbtTcPc/">Shooting Hoops with Keras and Tensorflow - Zack Akil</a></p>
+                <p><a href="https://roboflow.com/">Roboflow - Used for Creating Custom Object Detection Dataset</a></p>
+                <p><a href="https://pytorch.org/hub/ultralytics_yolov5/">PyTorch Hub Yolov5</a></p>
+                <p><a href="https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data">Yolov5 on Custom Data Tutorial</a></p>
     </div>
   );
 }
