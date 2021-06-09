@@ -92,8 +92,10 @@ function App() {
               </p>
               <img className="photo" src={shot_graph} alt="shot graph of moving pixels"/>
               <img className="photo" src={shot_graph_fit} alt="shot graph of moving pixels fitted with curve"/>
-              <img className="photo resize-photo" src={trajectory} alt="trajectory curve with variables"/>
-              <img className="photo resize-photo" src={projectile_formula} alt="projectile formula used for finding the angle and velocity"/>
+              <div>
+                <img className="photo resize-photo" src={trajectory} alt="trajectory curve with variables"/>
+                <img className="photo resize-photo" src={projectile_formula} alt="projectile formula used for finding the angle and velocity"/>
+              </div>
               <p>
                 To determine whether or not the shot made it in, we check for moving pixels in a region above the rim of the hoop, and if there is enough
                 movement in that region, we start checking for moving pixels in a region below the net (both need to be passed through for the shot to count).
@@ -115,7 +117,9 @@ function App() {
               </p>
               <video className="photo" src={M_Make} autoplay controls width="640" height="360"/>
               <video className="photo" src={M_Miss} autoplay controls width="640" height="360"/>
-              <img className="photo resize-photo" src={shot_stats} alt="text file containing shot stats"/>
+              <div>
+                <img className="photo resize-photo" src={shot_stats} alt="text file containing shot stats"/>
+              </div>
             <h2>Results</h2>
               <p>
                   We tested with 11 videos of shots going in and 29 videos of shot misses, and correctly classified 35 out of the 40.
