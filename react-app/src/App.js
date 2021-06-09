@@ -16,8 +16,9 @@ function App() {
               Inspired by one of our shared hobbies and being stuck inside this year, our team wanted to use
               our newfound computer vision and machine learning skills to analyze video of basketball shots. 
               Our initial goal was to be able to take video with a mobile device of someone shooting hoops 
-              and determine both the angle of their shot and whether or not it makes it into the hoop or not. 
-              Knowing the shot angle is helpful for players of all levels of experience, from beginner to professional.
+              and determine both the angle of their shot and whether it makes it into the hoop or not. We added some constraints
+              to this problem by limiting the use case to hoops with a net, videos shot perpendicular to the player and the hoop, as well
+              as requiring stable footage. Knowing the shot angle is helpful for players of all levels of experience, from beginner to professional.
               Many people have analyzed the physics behind a basketball shot and determined the "optimal" angle for release
               and entry - one source reported between 35 and 55 degrees depending on player height and shot distance. 
               While it's not a one-fits-all approach, the release angle does directly impact the outcome, and thus it's good to know 
@@ -35,7 +36,7 @@ function App() {
                 augment, split into train/test/validation, and export in the correct format for training. Our final dataset contained 813 images (after augmentation).
               </p>
               <p>
-                For testing our application, we took several videos on mobile devices at 3 different locations on different days. 
+                For testing our application, we took several videos on mobile devices at 3 different locations on different days (one day was shot handheld and the other day we used a tripod). 
                 These videos also included people of different heights. Because of COVID, we were unable to take our own video at any indoor courts
                 but based on our testing we believe that our application would likely perform better indoors because outdoors we had a great deal of background
                 movement from cars, trees, etc. skewing our algorithm's perception of where the ball is. 
@@ -77,19 +78,36 @@ function App() {
               </p>
               <h4>Displaying Analysis</h4>
               <p>
-                
+                In order to display the results of the shot analysis to the user we chose to make a text file, called "shot_stats.txt", containing the shot number,
+                the angle of the shot, and whether it was made or not for each shot they passed into the program. At the bottom of the 
+                of the text file we display the total number of shots made out of the the total number of shot attempts, the percentage 
+                of shots made, and the average shot angle. We also save new video files with the same names as the previous ones with the 
+                exception of "_analysis.avi" tacked on to the end of them that contain the original video with the shot arc overlayed on it 
+                (the shot arc is red for shots detected as misses and green otherwise).
               </p>
             <h2>Results</h2>
 
             <h2>Reflection</h2>
               <h4>Alternative Approaches</h4>
                 <p>
-                One problem we encountered 
+                One problem we encountered was background movement introducing noise into the coordinate data we used to fit our trajectory 
+                curve; this problem was especially apparent on the footage we shot handheld. An alternative approach that would circumvent
+                this problem would be to track the basketball throughout the frames in the video using yolov5 and take the coordinates from
+                the center of its bounding box. This approach has two methods of implementation; the first would be to use a version of yolov5
+                pre-trained on the COCO dataset and use the class sports ball to locate the basketball, the second would be to create a custom
+                dataset of various types of basketballs and train yolov5 on it in order to do the detection. We ended up foregoing these approaches
+                for a few reasons. Firstly, if we used the pretrained yolov5 we didn't think that sportsball represented what we were trying to detect
+                as much as a custom dataset could. Secondly, if we chose to create a custom dataset we didn't think we would have enough data to create
+                a representive group of basketballs of different styles in various environments (different lighting, position, etc). Lastly,
+                one of our biggest concerns was how well the basketball detection would work as the ball passes through the hoop since this is an
+                integral part of detecting whether a shot went in or not.
                 </p>
               <h4>Future Work</h4>
                 <p>
                 There is a lot of functionality that could be built onto this project and our team plans to continue work on it when we can!
-                In the future one thing we would want to be able to do is take video from any location on the court instead of needing to be 
+                In the future we might implement a hybrid of the approach discussed in "Alternative Approaches" and what we implemented, where we use
+                the basketball tracking until the ball reaches the hoop then use motion tracking to see if the shot was made. Another thing 
+                we would want to be able to do is take video from any location on the court instead of needing to be 
                 perpendicular to the shot - this could be achieved using a translation and mapping to 2D space, or alternatively
                 could be done by using a 3D trajectory formula if you can determine the precise player location on the court (potentially using homographies).
                 Additionally, for usability we really want users to be able to have shot analysis run directly on their mobile device instaed of needing to
