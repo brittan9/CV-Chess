@@ -23,7 +23,7 @@ function App() {
     <div className="App">
         <h1 className="App-header">Nothing But Net</h1>
           <h5>CSE 455 Computer Vision - Final Project</h5>
-          <h5>Team: Micah Wittaus and Brittan Robinett</h5>
+          <h5>Team: Micah Witthaus and Brittan Robinett</h5>
           <h5>Code: <a href="https://github.com/brittan9/CV-Nothing-But-Net">GitHub Repo</a></h5>
           <section>
           {/* <h2>Project Overview Video</h2> */}
