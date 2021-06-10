@@ -14,7 +14,8 @@ import M_Make from './data/analysis_M_Make.ogv'
 import M_Miss from './data/analysis_M_Miss.ogv'
 import B_Miss1 from './data/analysis_B_Miss1.ogv'
 import B_Miss2 from './data/analysis_B_Miss2.ogv'
-// import Overview from './data/overview_vid.ogv'
+import Overview from './data/overview.ogv'
+import overview_thumb from './data/overview_thumb.png'
 import shot_stats from './data/shot_stats.png'
 
 
@@ -26,8 +27,8 @@ function App() {
           <h5>Team: Micah Witthaus and Brittan Robinett</h5>
           <h5>Code: <a href="https://github.com/brittan9/CV-Nothing-But-Net">GitHub Repo</a></h5>
           <section>
-          {/* <h2>Project Overview Video</h2> */}
-            {/* <video className="photo" src={} autoplay controls width="960" height="540"/> */}
+          <h2>Project Overview Video</h2>
+            <video className="photo" src={Overview} poster={overview_thumb} autoplay controls width="960" height="540"/>
           <h2>Project Goals</h2>
             <p>
               Inspired by one of our shared hobbies and being stuck inside this year, our team wanted to use
@@ -58,7 +59,7 @@ function App() {
                 but based on our testing we believe that our application would likely perform better indoors because outdoors we had a great deal of background
                 movement from cars, trees, etc. skewing our algorithm's perception of where the ball is. 
               </p>
-              <img className="photo" src={hoop_dataset} alt="some labelled hoop data"/>
+              <img className="photo resize-big" src={hoop_dataset} alt="some labelled hoop data"/>
             <h4>Object Detection: Hoop and Person</h4>
               <p>
                 Our team chose to use Yolov5 for object detection because YOLO object detection methods are fast and accurate compared to other methods

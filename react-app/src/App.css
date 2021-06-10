@@ -36,6 +36,11 @@ p {
   height: 40%;
 }
 
+.resize-big {
+  width: 60%;
+  height: 60%;
+}
+
 h4 {
   text-align: left;
 }
